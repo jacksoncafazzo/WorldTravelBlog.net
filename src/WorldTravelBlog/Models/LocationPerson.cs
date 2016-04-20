@@ -12,7 +12,9 @@ namespace WorldTravelBlog.Models
     {
         [Key]
         public int LocationPersonId { get; set; }
+        [ForeignKey("Location")]
         public int LocationId { get; set; }
+        [ForeignKey("Person")]
         public int PersonId { get; set; }
 
         public virtual Location Location { get; set; }

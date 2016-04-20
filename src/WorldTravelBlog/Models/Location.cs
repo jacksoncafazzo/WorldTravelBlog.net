@@ -15,5 +15,8 @@ namespace WorldTravelBlog.Models
         public string Name { get; set; }
         public ICollection<ExperienceLocation> ExperienceLocations { get; set; }
         public ICollection<LocationPerson> LocationPeople { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Person> People { get; set; }
     }
 }
