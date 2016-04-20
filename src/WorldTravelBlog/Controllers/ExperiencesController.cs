@@ -24,16 +24,15 @@ namespace WorldTravelBlog.Controllers
         // GET: Experiences/Details/5
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
-
-            Experience experience = _context.Experiences.Single(m => m.ExperienceId == id);
-            if (experience == null)
-            {
-                return HttpNotFound();
-            }
+            Experience experience = _context.Experiences.FirstOrDefault(m => m.ExperienceId == id);
+            experience.Locations = _context.Locations.Join(_context.ExperienceLocations.Where(m => m.ExperienceId == id).ToList(),
+                m => m.LocationId,
+                m => m.LocationId,
+                (o, i) => o).ToList();
+            experience.People = _context.People.Join(_context.ExperiencePeople.Where(m => m.ExperienceId == id).ToList(),
+                m => m.PersonId,
+                m => m.PersonId,
+                (o, i) => o).ToList();
 
             return View(experience);
         }

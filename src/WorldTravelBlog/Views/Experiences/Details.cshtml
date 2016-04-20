@@ -1,7 +1,7 @@
 @model WorldTravelBlog.Models.Experience
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Experience Details";
 }
 
 <h2>Details</h2>
@@ -17,6 +17,29 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
     </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+    </dl>
+</div>
+
+<div class="list-people">
+    @foreach(var person in Model.People)
+    {
+        @Html.DisplayFor(m=>person, "person")
+    }
+</div>
+<div class="list-location">
+    @foreach(var location in Model.Locations)
+    {
+        @Html.DisplayFor(m => location, "location")
+    }
 </div>
 <p>
     <a asp-action="Edit" asp-route-id="@Model.ExperienceId">Edit</a> |
