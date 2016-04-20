@@ -34,20 +34,30 @@
             @Html.DisplayFor(model=>experience, "experience")
         }
     </ul>
+    
     add an experience:
-    <ul>
-        @foreach (var experience in ViewBag.Experiences)
-        {
-            @Html.DisplayFor(model => experience, "experience")
-        }
-    </ul>
+    @using (Html.BeginForm("Hangout", "People", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.PersonId, Model.PersonId)
+        <ul>
+            @foreach (var experience in ViewBag.Experiences)
+            {
+                @Html.DisplayFor(model => experience, "add-experience")
+            }
+        </ul>
+    }
+    
     add a location:
-    <ul>
-        @foreach (var location in ViewBag.Locations)
-        {
-            @Html.DisplayFor(model => location, "location")
-        }
-    </ul>
+    @using (Html.BeginForm("Relation", "People", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.PersonId, Model.PersonId)
+        <ul>
+            @foreach (var location in ViewBag.Locations)
+            {
+                @Html.DisplayFor(model => location, "add-location")
+            }
+        </ul>
+    }
 
 </div>
 <p>
