@@ -1,4 +1,7 @@
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Net.Http.Headers;
+using System.IO;
 using System.Linq;
 using WorldTravelBlog.Models;
 
@@ -60,12 +63,22 @@ namespace WorldTravelBlog.Controllers
         // POST: People/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Person person, string returnUrl)
+        public IActionResult Create(Person person, string returnUrl, IFormFile file = null)
         {
             if (ModelState.IsValid)
             {
+                if (file == null)
+                {
+                    person.ImgLink = "http://all4desktop.com/data_images/original/4242435-face.jpg";
+                }
                 _context.People.Add(person);
                 _context.SaveChanges();
+                if(file != null)
+                {
+                    person = this.savePhoto(person, file);
+                    _context.Update(person);
+                    _context.SaveChanges();
+                }
                 if (Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 else return RedirectToAction("Index");
@@ -92,10 +105,14 @@ namespace WorldTravelBlog.Controllers
         // POST: People/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Person person)
+        public IActionResult Edit(Person person, IFormFile file = null)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    person = this.savePhoto(person, file);
+                }
                 _context.Update(person);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -130,6 +147,15 @@ namespace WorldTravelBlog.Controllers
             _context.People.Remove(person);
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        public Person savePhoto(Person person, IFormFile file)
+        {
+            person.ImgLink = Path.Combine("images/people", person.Name + person.PersonId + ".jpg");
+            file.SaveAs(person.ImgLink);
+            person.ImgLink = "/" + person.ImgLink;
+            return person;
         }
     }
 }
