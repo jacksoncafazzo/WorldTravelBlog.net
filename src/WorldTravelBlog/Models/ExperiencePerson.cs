@@ -12,7 +12,11 @@ namespace WorldTravelBlog.Models
     {
         [Key]
         public int ExperiencePersonId { get; set; }
+
+        [ForeignKey("Experience")]
         public int ExperienceId { get; set; }
+
+        [ForeignKey("Person")]
         public int PersonId { get; set; }
 
         public virtual Experience Experience { get; set; }

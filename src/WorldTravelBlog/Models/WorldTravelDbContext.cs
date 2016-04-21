@@ -12,16 +12,18 @@ namespace WorldTravelBlog.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<ExperienceLocation> ExperienceLocations { get; set; }
-        public DbSet<LocationPerson> LocationPeople { get; set; }
         public DbSet<ExperiencePerson> ExperiencePeople { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Person>()
-                .HasMany(o => o.LocationPeople);
-            builder.Entity<Location>()
-                .HasMany(o => o.LocationPeople);
+            builder.Entity<Experience>()
+                .HasMany(o => o.ExperienceLocations);
+            builder.Entity<Experience>()
+                .HasMany(o => o.ExperiencePeople)
+                .WithOne(ep => ep.Experience)
+                .HasForeignKey(ep => ep.ExperienceId);
+                
         }
     }
 }

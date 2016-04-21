@@ -12,17 +12,16 @@ namespace WorldTravelBlog.Models
     {
         [Key]
         public int PersonId { get; set; }
+
         public string Name { get; set; }
-        public ICollection<LocationPerson> LocationPeople { get; set; }
+        public string ImgLink { get; set; }
         public ICollection<ExperiencePerson> ExperiencePeople { get; set; }
 
         [NotMapped]
-        public virtual ICollection<Location> Locations { get; set; }
-        [NotMapped]
         public virtual ICollection<Experience> Experiences { get; set; }
+
         public Person()
         {
-            this.Locations = new HashSet<Location>();
             this.Experiences = new HashSet<Experience>();
         }
     }

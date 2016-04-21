@@ -18,47 +18,13 @@
         </dd>
     </dl>
 
-    <div>
-        @Html.DisplayNameFor(model=>model.Locations) : @Html.DisplayFor(model=>model.Locations.Count)
-    </div>
-    <ul>
-        @foreach (var location in Model.Locations)
-        {
-            @Html.DisplayFor(model => location, "location")
-        }
-    </ul>
-    @Html.DisplayNameFor(model=>model.Experiences) : @Model.Experiences.Count
+    @Html.DisplayNameFor(model => model.Experiences) : @Model.Experiences.Count
     <ul>
         @foreach (var experience in Model.Experiences)
         {
-            @Html.DisplayFor(model=>experience, "experience")
+            @Html.DisplayFor(model => experience, "experience")
         }
     </ul>
-    
-    add an experience:
-    @using (Html.BeginForm("Hangout", "People", FormMethod.Post))
-    {
-        @Html.HiddenFor(model => model.PersonId, Model.PersonId)
-        <ul>
-            @foreach (var experience in ViewBag.Experiences)
-            {
-                @Html.DisplayFor(model => experience, "add-experience")
-            }
-        </ul>
-    }
-    
-    add a location:
-    @using (Html.BeginForm("Relation", "People", FormMethod.Post))
-    {
-        @Html.HiddenFor(model => model.PersonId, Model.PersonId)
-        <ul>
-            @foreach (var location in ViewBag.Locations)
-            {
-                @Html.DisplayFor(model => location, "add-location")
-            }
-        </ul>
-    }
-
 </div>
 <p>
     <a asp-action="Edit" asp-route-id="@Model.PersonId">Edit</a> |

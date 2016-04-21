@@ -8,9 +8,10 @@ using WorldTravelBlog.Models;
 namespace WorldTravelBlog.Migrations.WorldTravelDb
 {
     [DbContext(typeof(WorldTravelDbContext))]
-    partial class WorldTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160421165730_RemoveLocationPeople")]
+    partial class RemoveLocationPeople
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

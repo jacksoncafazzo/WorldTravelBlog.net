@@ -4,36 +4,104 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="row">
+    <h2>Edit</h2>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div class="form-horizontal">
+                <h4>Experience</h4>
+                <hr />
+                <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ExperienceId" />
+                <div class="form-group">
+                    <label asp-for="Title" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Body" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Body" class="form-control" />
+                        <span asp-validation-for="Body" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <ul>
+                    @using (Html.BeginForm("RemoveEvent", "Experiences", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(m => m.ExperienceId)
+                        <li><h4>Location(s) it took place</h4></li>
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <h4>Experience</h4>
-        <hr />
-        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="ExperienceId" />
-        <div class="form-group">
-            <label asp-for="Body" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Body" class="form-control" />
-                <span asp-validation-for="Body" class="text-danger" />
+                        @foreach (var location in Model.Locations)
+                        {
+                            @Html.DisplayFor(e => location, "list-location-admin")
+
+                        }
+                    }
+                </ul>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Title" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-6">
+                <ul>
+                    @using (Html.BeginForm("RemoveHappening", "Experiences", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(m => m.ExperienceId)
+                        <li><h4>People involved</h4></li>
+                        @foreach (var person in Model.People)
+                        {
+
+                            @Html.DisplayFor(e => person, "list-person-admin")
+
+                        }
+                    }
+                </ul>
             </div>
         </div>
     </div>
-</form>
-
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <ul>
+            @using (Html.BeginForm("Event", "Experiences", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.ExperienceId)
+                <li><h2>Add Locations</h2></li>
+                @foreach (var location in ViewBag.Locations)
+                {
+                    @Html.DisplayFor(model => location, "add-location")
+                }
+            }
+        </ul>
+        @Html.ActionLink("Create New Location", "Create", "Locations", new { returnUrl = ViewData["ReturnUrl"] })
+    </div>
+    <div class="col-md-6">
+        <ul>
+            @using (Html.BeginForm("Happening", "Experiences", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.ExperienceId)
+                <li><h2>Add People</h2></li>
+                @foreach (var person in ViewBag.People)
+                {
+                    @Html.DisplayFor(model => person, "add-person")
+                }
+            }
+        </ul>
+        @Html.ActionLink("Create New Person", "Create", "People", new { returnUrl = ViewData["ReturnUrl"] })
+    </div>
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

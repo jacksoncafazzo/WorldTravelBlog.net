@@ -1,7 +1,7 @@
-using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
+using System.Linq;
 using WorldTravelBlog.Models;
 
 namespace WorldTravelBlog.Controllers
@@ -12,7 +12,7 @@ namespace WorldTravelBlog.Controllers
 
         public LocationsController(WorldTravelDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Locations
@@ -39,21 +39,27 @@ namespace WorldTravelBlog.Controllers
         }
 
         // GET: Locations/Create
-        public IActionResult Create()
+        public IActionResult Create(string returnUrl = null)
         {
+            if (returnUrl == null)
+                returnUrl = "/Locations";
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         // POST: Locations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Location location)
+        public IActionResult Create(Location location, string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
                 _context.Locations.Add(location);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                if (returnUrl == null)
+                    return RedirectToAction("Index");
+                else if (Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
             }
             return View(location);
         }

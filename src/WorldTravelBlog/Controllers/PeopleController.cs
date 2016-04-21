@@ -29,64 +29,46 @@ namespace WorldTravelBlog.Controllers
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Person" + person.Name + " ID " + id);
-                var locations = _context.LocationPeople.Where(m => m.PersonId == id).ToList();
-                person.Locations = _context.Locations.Join(
-                    locations,
-                    m => m.LocationId,
-                    m => m.LocationId,
-                    (o, i) => o)
-                    .ToList();
                 person.Experiences = _context.Experiences.Join(_context.ExperiencePeople.Where(m => m.PersonId == id).ToList(), m => m.ExperienceId, m => m.ExperienceId, (o, i) => o).ToList();
-                ViewBag.Locations = _context.Locations.ToList().Except(person.Locations);
-                ViewBag.Experiences = _context.Experiences.ToList().Except(person.Experiences);
             }
 
             return View(person);
         }
 
         [HttpPost]
-        public IActionResult Relation(int PersonId, int locationId)
-        {
-            System.Diagnostics.Debug.WriteLine("locationId :" + locationId);
-
-            LocationPerson relation = new LocationPerson();
-            relation.LocationId = locationId;
-            relation.PersonId = PersonId;
-            _context.LocationPeople.Add(relation);
-
-            _context.SaveChanges();
-            return RedirectToAction("Details", new { id = PersonId });
-        }
-
-        [HttpPost]
         public IActionResult Hangout(int PersonId, int experienceId)
         {
-            System.Diagnostics.Debug.WriteLine("experienceID :" + experienceId);
             ExperiencePerson hangout = new ExperiencePerson();
             hangout.PersonId = PersonId;
             hangout.ExperienceId = experienceId;
             _context.ExperiencePeople.Add(hangout);
             _context.SaveChanges();
-            return RedirectToAction("Details", new { id = PersonId });
+            return RedirectToAction("Edit", new { id = PersonId });
         }
 
         // GET: People/Create
-        public IActionResult Create()
+        public IActionResult Create(string returnUrl = null)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = "/People/";
+            }
+            ViewBag.returnUrl = returnUrl;
             return View();
         }
 
         // POST: People/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Person person)
+        public IActionResult Create(Person person, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 _context.People.Add(person);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                if (Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                else return RedirectToAction("Index");
             }
             return View(person);
         }
@@ -99,11 +81,11 @@ namespace WorldTravelBlog.Controllers
                 return HttpNotFound();
             }
 
-            Person person = _context.People.Single(m => m.PersonId == id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
+            Person person = _context.People.FirstOrDefault(m => m.PersonId == id);
+
+            person.Experiences = _context.Experiences.Join(_context.ExperiencePeople.Where(m => m.PersonId == id).ToList(), m => m.ExperienceId, m => m.ExperienceId, (o, i) => o).ToList();
+
+            ViewBag.Experiences = _context.Experiences.ToList().Except(person.Experiences);
             return View(person);
         }
 
