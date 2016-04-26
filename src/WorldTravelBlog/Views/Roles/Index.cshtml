@@ -1,14 +1,13 @@
-﻿@using System.Runtime.InteropServices.ComTypes
-<h2>CREEEETEEETEETETE SOME RULLLLZZZ DUDE</h2>
-
-@Html.ActionLink("Create a Role", "Create", "Roles")
-| @Html.ActionLink("Assign Roles", "Assign", "Roles")
+﻿
+@{
+    Layout = "_RoleLayout";
+}
 
 @foreach (var s in Model)
 {
     <div>
         @s.ToString() | <span onclick="return confirm('are you sure you delete you?')">
-            <a href="/Roles/Delete?RoleName=@s.ToString()">Delete</a>
-        </span>
+            <a href="/Roles/Delete?RoleName=@s.ToString()">Delete</a> 
+        </span> | <a href="/Roles/Edit?RoleName=@s.ToString()">Edit</a>
     </div>
 }
