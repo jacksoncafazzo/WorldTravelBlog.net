@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Give a user a role";
+    
+}
+
+<h2>Give a user a point in life</h2>
+
+@using (Html.BeginForm("GetRoles", "Roles", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="message-success">@ViewBag.ResultMessage</div>
+
+    <p>
+        Username : @Html.DropDownList("User", ViewBag.Users as SelectList, new { onselect="this.form.submit()" })
+    </p>
+
+    <input type="submit" value="Choose" />
+}
+
+@if (ViewBag.RolesForThisUser != null)
+{
+    <h3>Roles for @ViewBag.User.UserName </h3>
+    <ul>
+        @foreach (var s in ViewBag.RolesForThisUser)
+        {
+            <li>@s.ToString()</li>
+        }
+    </ul>
+
+    <div >
+        @using (Html.BeginForm("AddToUser", "Roles", FormMethod.Post))
+        {
+            var username = ViewBag.User.UserName;
+            <p>@Html.HiddenFor(m=> username)</p>
+            <p>Add Role: @Html.DropDownList("RoleName", ViewBag.Roles as SelectList)</p>
+             <input type="submit" value="Add Role"/>
+         }
+    </div>
+
+}
