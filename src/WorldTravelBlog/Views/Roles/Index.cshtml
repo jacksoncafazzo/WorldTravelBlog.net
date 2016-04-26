@@ -1,0 +1,13 @@
+﻿@using System.Runtime.InteropServices.ComTypes
+<h2>CREEEETEEETEETETE SOME RULLLLZZZ DUDE</h2>
+
+@Html.ActionLink("Create a Role", "Create", "Roles")
+
+@foreach (var s in Model)
+{
+    <div>
+        @s.ToString() | <span onclick="return confirm('are you sure you delete you?')">
+            <a href="/Roles/Delete?RoleName=@s.ToString()">Delete</a>
+        </span>
+    </div>
+}

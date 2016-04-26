@@ -1,0 +1,9 @@
+﻿
+
+<h2>Name ur role bud</h2>
+@using (Html.BeginForm("Create", "Roles", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    <label>Role Name: @Html.TextBox("RoleName")</label>
+    <input type="submit" name="submit" value="Add Role"/>
+}
