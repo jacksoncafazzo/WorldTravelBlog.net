@@ -128,7 +128,7 @@ namespace WorldTravelBlog.Controllers
         public IActionResult Edit(string roleName)
         {
             ViewData["roleName"] = roleName;
-            return View();
+            return View("Edit");
         }
 
         [HttpPost]
