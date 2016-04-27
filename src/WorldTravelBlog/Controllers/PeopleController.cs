@@ -19,7 +19,7 @@ namespace WorldTravelBlog.Controllers
         // GET: People
         public IActionResult Index()
         {
-            return View(_context.People.ToList());
+            return View("View", _context.People.ToList());
         }
 
         // GET: People/Details/5
@@ -73,7 +73,7 @@ namespace WorldTravelBlog.Controllers
                 }
                 _context.People.Add(person);
                 _context.SaveChanges();
-                if(file != null)
+                if (file != null)
                 {
                     person = this.savePhoto(person, file);
                     _context.Update(person);
